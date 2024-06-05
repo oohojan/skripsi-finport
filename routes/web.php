@@ -4,15 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 
-Route::get('/', function () {
-    return view('welcome');
-})->middleware('auth');
+// Route::get('/', function () {
+//     return view('welcome');
+// })->middleware('auth');
 
 Route::middleware('only_guest')->group(function(){
     Route::get('login',[AuthController::class, 'login'])->name('login');
     Route::post('login',[AuthController::class, 'authenticating']);
     Route::get('register',[AuthController::class, 'register']);
+    Route::post('register',[AuthController::class, 'registerUser']);
 });
 
 Route::middleware('auth')->group(function(){
@@ -22,4 +24,6 @@ Route::middleware('auth')->group(function(){
     Route::get('profile', [ProfileController::class, 'profile']);
 });
 
+Route::get('/register', [RoleController::class, 'index']);
+Route::get('/user/{id_role}', [RoleController::class, 'getRole']);
 

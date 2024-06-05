@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,6 +46,27 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        return redirect('login');
+    }
+
+    public function registerUser(Request $request){
+        $validate = $request->validate([
+            'Nama' => 'required|max:255',
+            'email' => 'required|unique:users|max:255,',
+            'password' => 'required|max:255',
+            'No_Telepon' => 'max:255',
+            'address' => 'max:255',
+        ]);
+
+        $user = User::create([
+        'Nama' => $request->Nama,
+        'email' => $request->email,
+        'password' => bcrypt($request->password), // Hash the password before storing it
+        'No_telepon' => $request->No_telepon,
+        'address' => $request->address,
+        'id_role' => $request->role,
+        ]);
+
         return redirect('login');
     }
 }
