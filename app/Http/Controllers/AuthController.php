@@ -64,8 +64,9 @@ class AuthController extends Controller
         'password' => bcrypt($request->password), // Hash the password before storing it
         'No_telepon' => $request->No_telepon,
         'address' => $request->address,
-        'id_role' => $request->role,
         ]);
+
+        session()->flash('success', 'Akun berhasil diregister, Silahkan Login');
 
         return redirect('login');
     }

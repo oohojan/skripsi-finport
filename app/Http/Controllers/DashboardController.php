@@ -6,11 +6,11 @@ class DashboardController extends Controller
 {
     public function dash_owner()
     {
-        dd('ini dashboard Owner');
+        return view('dashboard_owner');
     }
 
     public function dash_emp()
     {
-        dd('ini dashboard employee');
+        return view('dashboard_emp');
     }
 }

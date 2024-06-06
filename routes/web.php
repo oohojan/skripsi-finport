@@ -6,9 +6,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// })->middleware('auth');
+Route::get('/', function () {
+    return view('welcome');
+})->middleware('auth');
 
 Route::middleware('only_guest')->group(function(){
     Route::get('login',[AuthController::class, 'login'])->name('login');
@@ -24,6 +24,6 @@ Route::middleware('auth')->group(function(){
     Route::get('profile', [ProfileController::class, 'profile']);
 });
 
-Route::get('/register', [RoleController::class, 'index']);
-Route::get('/user/{id_role}', [RoleController::class, 'getRole']);
+// Route::get('/register', [RoleController::class, 'index']);
+// Route::get('/user/{id_role}', [RoleController::class, 'getRole']);
 

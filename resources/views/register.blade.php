@@ -62,7 +62,7 @@
                     <label for="address" class="form-label">Alamat</label>
                     <textarea name="address" id="address" class="form-control"></textarea>
                 </div>
-                <div>
+                {{-- <div>
                     <label for="role" class="form-label">Role</label>
                     <select name="role" id="role" class="form-control" required>
                             <option value="">Pilih</option>
@@ -70,7 +70,7 @@
                                 <option value="{{$item->id}}">{{$item->name}}</option>
                             @endforeach
                     </select>
-                </div>
+                </div> --}}
                 <div class="button">
                     <div>
                         <button type="submit" class="btn btn-primary form-control">Register</button>

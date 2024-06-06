@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard Owner</title>
-</head>
-<body>
-    ini halaman dashboard owner
-</body>
-</html>
+@extends('layout.mainlayout')
+
+@section('title', 'Dashboard Owner')
+
+@section('content')
+    <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima doloribus placeat modi corporis, ab laborum quas. Dolores tempora suscipit provident optio dolore aspernatur odio delectus voluptatibus fugiat iusto dolorem, vel nobis quidem, quis deleniti exercitationem? Tempora laborum molestias iusto. Ex expedita voluptate omnis tenetur libero quibusdam ullam provident non quod fugit hic dolores, quia labore laudantium eos quam quae corporis dignissimos molestiae natus quidem ad atque optio nulla! Itaque voluptas quod odio dicta suscipit. Provident odit, assumenda sapiente officiis laborum numquam excepturi corrupti inventore id totam consectetur unde vel nostrum sed ad neque, voluptatum reiciendis. Id cumque eaque obcaecati officia quas veniam quo possimus corrupti accusantium animi nisi quasi inventore unde quae dolore sed sapiente sequi, mollitia delectus porro. Perspiciatis voluptatum consequatur ipsa minima itaque ratione fugiat numquam natus. Consequatur earum impedit voluptas similique dolorum asperiores, veritatis eligendi quae fugit vero perspiciatis et fuga quod harum incidunt sunt accusantium ut maxime? Tenetur qui ullam dolore atque? Consectetur repellat ipsum sapiente, necessitatibus voluptatibus repellendus debitis ducimus, placeat ex officia natus sint maiores minus hic. Magni mollitia architecto eligendi. Laboriosam, obcaecati? Consectetur vero debitis voluptate quisquam enim deserunt quasi dolore nihil aperiam aliquam exercitationem cumque iste ratione incidunt, esse id magnam libero amet? Quas, dolorum. Voluptate eius repudiandae, qui, alias magnam labore minus id sit deleniti ad adipisci veniam velit voluptatum quasi excepturi ipsa corrupti quisquam odit? Doloribus, aperiam. Odio officiis numquam earum. Commodi nemo dolore blanditiis qui fuga placeat expedita inventore deserunt necessitatibus obcaecati dolorem sunt rem, aperiam, sequi natus eveniet quaerat assumenda officiis, beatae voluptatem quae enim velit ea. Odio inventore in voluptatibus architecto sint aliquam delectus culpa consequuntur voluptate impedit laboriosam commodi, magnam laborum incidunt labore non distinctio expedita debitis asperiores dolore nesciunt reprehenderit a! Quos hic, tempora debitis odio minus quas earum nihil quibusdam sequi ab et voluptatum at, unde perferendis vitae eius tempore? Non placeat aut dignissimos. Voluptates, rerum vero, quo consequatur, voluptatibus obcaecati cupiditate eum quaerat voluptatum a tenetur! Autem sit vero hic quibusdam enim sequi perspiciatis rem nihil voluptas ipsum illum eos fugit provident, placeat blanditiis! Delectus perferendis excepturi, nulla laudantium obcaecati architecto culpa! At, asperiores reprehenderit. Laboriosam, impedit optio esse voluptate vel doloremque porro non deleniti natus velit veritatis ex molestias doloribus! Reprehenderit quas dolore fugit modi, deserunt non sit rerum atque quaerat nihil culpa accusamus tenetur delectus maiores, doloremque perferendis asperiores aut corrupti consequatur sint officia illum quo? Error, deserunt placeat asperiores sunt, omnis aperiam suscipit voluptate et possimus voluptatum cum nobis provident odio? Voluptatum quasi inventore fuga labore amet magnam sed perspiciatis vero odit magni totam nulla ad saepe provident illo dolor quaerat mollitia alias tempore cumque aliquam quas, illum at rem. Rerum perspiciatis eum atque odit temporibus eveniet iure! Molestias incidunt praesentium sapiente in at vel, nam animi dignissimos nobis? Ex natus, distinctio alias incidunt facere voluptatum ratione nam minima deserunt suscipit sunt amet sint officiis rerum, ab quos sapiente? Veniam et nulla molestias nostrum eius iure deserunt, minus exercitationem optio illo enim eum distinctio tenetur velit nam dolores molestiae alias.
+    </p>
+@endsection

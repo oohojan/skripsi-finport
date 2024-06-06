@@ -32,7 +32,11 @@
 
 <body>
     <div class="main d-flex flex-column justify-content-center align-items-center">
-
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="form-login">
             <form action="" method="post">
                 @csrf
