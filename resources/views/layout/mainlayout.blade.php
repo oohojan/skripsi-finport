@@ -6,29 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>FinPort | @yield('title') </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
 </head>
-
-<style>
-    .main{
-        height: 100vh;
-    }
-
-    .sidebar{
-        background: rgb(30, 49, 109);
-        color: white;
-    }
-
-    .sidebar a{
-        color: #fff;
-        text-decoration: none;
-        display: block;
-        padding: 20px 10px;
-    }
-
-    .sidebar a:hover{
-        background: rgb(23, 129, 200);
-    }
-</style>
 
 <body>
 
@@ -47,20 +27,20 @@
                 <div class="sidebar col-lg-2 collapse d-lg-block" id="navbarTogglerDemo02">
                         @if (Auth::user()->id_role == 1)
                             {{-- ini buat owner --}}
-                            <a href="#">Dashboard ></a>
-                            <a href="profile">Profile ></a>
-                            <a href="#">Bisnis Anda ></a>
-                            <a href="#">Pemasok ></a>
-                            <a href="#">Laporan Keuangan ></a>
-                            <a href="#">Transaksi ></a>
-                            <a href="#">Pelanggan ></a>
+                            <a href="dashboard_owner" @if(request()->route()->uri == 'dashboard_owner') class ='active' @endif>Dashboard ></a>
+                            <a href="profile" @if(request()->route()->uri == 'profile') class ='active' @endif>Profile ></a>
+                            <a href="bisnis_anda" @if(request()->route()->uri == 'bisnis_anda') class ='active' @endif>Bisnis Anda ></a>
+                            <a href="pemasok" @if(request()->route()->uri == 'pemasok') class ='active' @endif>Pemasok ></a>
+                            <a href="lap_keuangan" @if(request()->route()->uri == 'lap_keuangan') class ='active' @endif>Laporan Keuangan ></a>
+                            <a href="transaksi" @if(request()->route()->uri == 'transaksi') class ='active' @endif>Transaksi ></a>
+                            <a href="pelanggan" @if(request()->route()->uri == 'pelanggan') class ='active' @endif>Pelanggan ></a>
                             <a href="logout">Logout ></a>
                         @else
                             {{-- ini buat employee --}}
-                            <a href="#">Dashboard ></a>
-                            <a href="profile">Profile ></a>
-                            <a href="#">Transaksi ></a>
-                            <a href="#">Pelanggan ></a>
+                            <a href="dashboard_emp" @if(request()->route()->uri == 'dashboard_emp') class ='active' @endif>Dashboard ></a>
+                            <a href="profile" @if(request()->route()->uri == 'profile') class ='active' @endif>Profile ></a>
+                            <a href="transaksi" @if(request()->route()->uri == 'transaksi') class ='active' @endif>Transaksi ></a>
+                            <a href="pelanggan" @if(request()->route()->uri == 'pelanggan') class ='active' @endif>Pelanggan ></a>
                             <a href="logout">Logout ></a>
                         @endif
                 </div>

@@ -1,0 +1,54 @@
+.main{
+    height: 100vh;
+}
+
+.sidebar{
+    background: rgb(30, 49, 109);
+    color: white;
+}
+
+.sidebar a{
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 20px 10px;
+}
+
+.sidebar a:hover{
+    background: rgb(23, 129, 200);
+}
+.active {
+    background: rgb(23, 129, 200);
+    border-right: solid 8px rgb(225, 231, 232);
+}
+
+.card-data{
+    border: solid 1px;
+    padding: 20px 50px;
+    color: #fff;
+}
+
+.card-data.barang{
+    background-color: orangered;
+}
+
+.card-data.pemasok{
+    background-color: rgb(41, 162, 105);
+}
+
+.card-data.transaksi{
+    background-color: rgb(194, 71, 203);
+}
+
+.card-data i{
+    font-size: 80px;
+
+}
+
+.card-desc{
+    font-size: 30px;
+}
+
+.card-count{
+    font-size: 20px;
+}
