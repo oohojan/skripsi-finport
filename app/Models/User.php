@@ -17,6 +17,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $table = 'users';
+
     protected $fillable = [
         'Nama',
         'email',
@@ -48,4 +51,9 @@ class User extends Authenticatable
     protected $attributes = [
         'id_role' => 2
     ];
+
+    public function umkm()
+    {
+        return $this->hasOne(Umkm::class, 'id_user');
+    }
 }

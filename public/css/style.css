@@ -52,3 +52,8 @@
 .card-count{
     font-size: 20px;
 }
+
+.action-buttons {
+    display: flex; /* Menggunakan flexbox */
+    gap: 5px; /* Jarak antara tombol */
+}

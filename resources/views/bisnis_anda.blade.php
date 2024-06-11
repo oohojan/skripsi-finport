@@ -1,6 +1,6 @@
 @extends('layout.mainlayout')
 
-@section('title', 'Dashboard Owner')
+@section('title', 'Bisnis Anda')
 
 @section('content')
     <h1>ini halaman bisnis anda</h1>

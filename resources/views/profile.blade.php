@@ -1,6 +1,6 @@
 @extends('layout.mainlayout')
 
-@section('title', 'Dashboard Owner')
+@section('title', 'Profile')
 
 @section('content')
     <h1>ini halaman profile</h1>

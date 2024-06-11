@@ -1,6 +1,6 @@
 @extends('layout.mainlayout')
 
-@section('title', 'Dashboard Owner')
+@section('title', 'Transaksi')
 
 @section('content')
     <h1>
