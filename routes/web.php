@@ -24,9 +24,9 @@ Route::middleware('only_guest')->group(function(){
 
 Route::middleware('auth')->group(function(){
     Route::get('logout', [AuthController::class, 'logout']);
-    Route::get('dashboard_owner', [DashboardController::class, 'dash_owner'])->middleware('only_owner');
+    Route::get('dashboard_owner', [DashboardController::class, 'dash_owner'])->middleware('only_owner')->name('dashboard_owner');
     Route::get('dashboard_emp', [DashboardController::class, 'dash_emp'])->middleware('only_emp');
-    Route::get('profile', [ProfileController::class, 'profile']);
+    Route::get('profile', [ProfileController::class, 'profile'])->name('profile');;
     Route::get('bisnis_anda', [BisnisController::class, 'bisnis']);
 
     Route::get('pemasok', [PemasokController::class, 'pemasok']);
@@ -47,6 +47,11 @@ Route::middleware('auth')->group(function(){
     Route::get('lap_keuangan', [LaporanController::class, 'laporan']);
     Route::get('transaksi', [TransaksiController::class, 'transaksi']);
     Route::get('pelanggan', [PelangganController::class, 'pelanggan']);
+
+    Route::get('umkm-list', [BisnisController::class, 'umkm']);
+    Route::get('add-umkm', [BisnisController::class, 'add']);
+    Route::post('add-umkm', [BisnisController::class, 'store']);
+    Route::post('join-umkm/{id}', [BisnisController::class, 'joinUmkm'])->name('join-umkm');
 });
 
 // Route::get('/register', [RoleController::class, 'index']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Pelanggan;
 use App\Models\Umkm;
 use Illuminate\Http\Request;
@@ -9,16 +10,36 @@ use Illuminate\Support\Facades\Auth;
 
 class PelangganController extends Controller
 {
-    public function pelanggan(){
-
+    public function pelanggan()
+    {
         $user = Auth::user();
 
-        $umkm = Umkm::where('id_user', $user->id)->first();
+        if ($user->have_business == 0) {
+            return view('belum-bergabung');
+        }
 
-        if ($umkm) {
-            $pelanggan = Pelanggan::where('id_umkm', $umkm->id)->get();
+        // Cek peran pengguna
+        if ($user->id_role == 1) {
+            // Jika pengguna adalah owner
+            $umkm = Umkm::where('id_user', $user->id)->first();
+
+            if ($umkm) {
+                $pelanggan = Pelanggan::where('id_umkm', $umkm->id)->get();
+            } else {
+                $pelanggan = collect();
+            }
+        } elseif ($user->id_role == 2) {
+            // Jika pengguna adalah employee
+            $employee = Employee::where('id_user', $user->id)->first();
+
+            if ($employee) {
+                $pelanggan = Pelanggan::where('id_umkm', $employee->id_umkm)->get();
+            } else {
+                $pelanggan = collect();
+            }
         } else {
-            $pelanggan = collect();
+            // Peran tidak valid
+            abort(403, 'Unauthorized action.');
         }
 
         return view('pelanggan', ['pelanggan' => $pelanggan]);

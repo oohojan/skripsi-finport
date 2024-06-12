@@ -26,7 +26,8 @@ class User extends Authenticatable
         'password',
         'No_Telepon',
         'address',
-        'id_role'
+        'id_role',
+        'have_business'
     ];
 
     /**
@@ -49,7 +50,8 @@ class User extends Authenticatable
     ];
 
     protected $attributes = [
-        'id_role' => 2
+        'id_role' => 2,
+        'have_business' => 0
     ];
 
     public function umkm()
