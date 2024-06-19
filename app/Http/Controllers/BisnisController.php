@@ -12,7 +12,8 @@ class BisnisController extends Controller
 {
     public function bisnis(){
 
-        return view('bisnis_anda');
+        $umkm = UMKM::where('id_user', Auth::id())->first();
+        return view('bisnis_anda', compact('umkm'));
     }
 
     public function umkm(){
@@ -74,5 +75,32 @@ class BisnisController extends Controller
 
         // Redirect atau tampilkan pesan sukses
         return redirect()->route('dashboard_owner')->with('success', 'UMKM berhasil ditambahkan.');
+    }
+
+    public function editBisnis(Request $request){
+        $umkm = UMKM::where('id_user', Auth::id())->first();
+        return view('edit-bisnis_anda', compact('umkm'));
+    }
+
+    public function updateBisnis(Request $request, $id)
+    {
+        $request->validate([
+            'nama_umkm' => 'required|string|max:255',
+            'alamat_umkm' => 'required|string|max:255',
+        ]);
+
+        $umkm = UMKM::find($id);
+        if (!$umkm) {
+            return redirect()->route('bisnis.edit', $id)->with('error', 'UMKM not found.');
+        }
+
+        $umkm->nama_umkm = $request->nama_umkm;
+        $umkm->alamat_umkm = $request->alamat_umkm;
+
+        if ($umkm->save()) {
+            return redirect()->route('bisnis_anda')->with('success', 'UMKM updated successfully.');
+        } else {
+            return redirect()->route('bisnis.edit', $id)->with('error', 'Failed to update UMKM.');
+        }
     }
 }

@@ -14,10 +14,6 @@ class PelangganController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->have_business == 0) {
-            return view('belum-bergabung');
-        }
-
         // Cek peran pengguna
         if ($user->id_role == 1) {
             // Jika pengguna adalah owner

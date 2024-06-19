@@ -25,24 +25,24 @@
           <div class="body-content h-100">
             <div class="row g-0 h-100">
                 <div class="sidebar col-lg-2 collapse d-lg-block" id="navbarTogglerDemo02">
-                        @if (Auth::user()->id_role == 1)
-                            {{-- ini buat owner --}}
-                            <a href="dashboard_owner" @if(request()->route()->uri == 'dashboard_owner') class ='active' @endif>Dashboard ></a>
-                            <a href="profile" @if(request()->route()->uri == 'profile') class ='active' @endif>Profile ></a>
-                            <a href="bisnis_anda" @if(request()->route()->uri == 'bisnis_anda') class ='active' @endif>Bisnis Anda ></a>
-                            <a href="pemasok" @if(request()->route()->uri == 'pemasok') class ='active' @endif>Pemasok ></a>
-                            <a href="lap_keuangan" @if(request()->route()->uri == 'lap_keuangan') class ='active' @endif>Laporan Keuangan ></a>
-                            <a href="transaksi" @if(request()->route()->uri == 'transaksi') class ='active' @endif>Transaksi ></a>
-                            <a href="pelanggan" @if(request()->route()->uri == 'pelanggan') class ='active' @endif>Pelanggan ></a>
-                            <a href="logout">Logout ></a>
-                        @else
-                            {{-- ini buat employee --}}
-                            <a href="dashboard_emp" @if(request()->route()->uri == 'dashboard_emp') class ='active' @endif>Dashboard ></a>
-                            <a href="profile" @if(request()->route()->uri == 'profile') class ='active' @endif>Profile ></a>
-                            <a href="transaksi" @if(request()->route()->uri == 'transaksi') class ='active' @endif>Transaksi ></a>
-                            <a href="pelanggan" @if(request()->route()->uri == 'pelanggan') class ='active' @endif>Pelanggan ></a>
-                            <a href="logout">Logout ></a>
-                        @endif
+                    @if (Auth::user()->id_role == 1)
+                        {{-- ini buat owner --}}
+                        <a href="{{ route('dashboard_owner') }}" class="@if(request()->route()->getName() == 'dashboard_owner') active @endif">Dashboard ></a>
+                        <a href="{{ route('profile') }}" class="@if(request()->route()->getName() == 'profile') active @endif">Profile ></a>
+                        <a href="{{ route('bisnis_anda') }}" class="@if(request()->route()->getName() == 'bisnis_anda') active @endif">Bisnis Anda ></a>
+                        <a href="{{ route('pemasok') }}" class="@if(request()->route()->getName() == 'pemasok') active @endif">Pemasok ></a>
+                        <a href="{{ route('lap_keuangan') }}" class="@if(request()->route()->getName() == 'lap_keuangan') active @endif">Laporan Keuangan ></a>
+                        <a href="{{ route('transaksi') }}" class="@if(request()->route()->getName() == 'transaksi') active @endif">Transaksi ></a>
+                        <a href="{{ route('pelanggan') }}" class="@if(request()->route()->getName() == 'pelanggan') active @endif">Pelanggan ></a>
+                        <a href="{{ route('logout') }}">Logout ></a>
+                    @else
+                        {{-- ini buat employee --}}
+                        <a href="{{ route('dashboard_emp') }}" class="@if(request()->route()->getName() == 'dashboard_emp') active @endif">Dashboard ></a>
+                        <a href="{{ route('profile') }}" class="@if(request()->route()->getName() == 'profile') active @endif">Profile ></a>
+                        <a href="{{ route('transaksi') }}" class="@if(request()->route()->getName() == 'transaksi') active @endif">Transaksi ></a>
+                        <a href="{{ route('pelanggan') }}" class="@if(request()->route()->getName() == 'pelanggan') active @endif">Pelanggan ></a>
+                        <a href="{{ route('logout') }}">Logout ></a>
+                    @endif
                 </div>
 
                 <div class="content p-5 col-lg-10">

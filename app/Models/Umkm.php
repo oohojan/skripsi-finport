@@ -24,4 +24,14 @@ class Umkm extends Model
     public function pelanggan(){
         return $this->hasMany(Pelanggan::class, 'id_umkm');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaksi::class, 'id_umkm');
+    }
+
+    public function employees()
+    {
+        return $this->hasMany(Employee::class, 'id_umkm');
+    }
 }

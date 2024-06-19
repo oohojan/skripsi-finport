@@ -55,8 +55,8 @@
                     <input type="password" name="password" id="password" class="form-control" required>
                 </div>
                 <div>
-                    <label for="no_telepon" class="form-label">No Telepon</label>
-                    <input type="text" name="no_telepon" id="no_telepon" class="form-control">
+                    <label for="No_Telepon" class="form-label">No Telepon</label>
+                    <input type="text" name="No_Telepon" id="No_Telepon" class="form-control">
                 </div>
                 <div>
                     <label for="address" class="form-label">Alamat</label>

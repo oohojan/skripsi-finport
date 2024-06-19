@@ -12,4 +12,9 @@ class Employee extends Model
     protected $fillable = [
         'id_umkm', 'id_user'
     ];
+
+    public function umkm()
+    {
+        return $this->belongsTo(Umkm::class, 'id_umkm');
+    }
 }
