@@ -9,8 +9,8 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PemasokController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TransaksiController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +21,7 @@ Route::middleware('only_guest')->group(function(){
     Route::post('login',[AuthController::class, 'authenticating']);
     Route::get('register',[AuthController::class, 'register']);
     Route::post('register',[AuthController::class, 'registerUser']);
+    Route::get('user/verify/{token}', [AuthController::class, 'verifyEmail']);
 });
 
 Route::middleware('auth')->group(function(){
@@ -59,6 +60,7 @@ Route::middleware('auth')->group(function(){
     Route::delete('delete-pelanggan/{id}', [PelangganController::class, 'destroy'])->name('delete-pelanggan');
 
     Route::get('lap_keuangan', [LaporanController::class, 'laporan'])->name('lap_keuangan');
+    Route::get('/laporan/{bulan}', [LaporanController::class, 'detailLaporan']);
 
     Route::get('transaksi', [TransaksiController::class, 'transaksi'])->name('transaksi');
     Route::get('transaksi-detail/{id}', [TransaksiController::class, 'detail'])->name('transaksi-detail');
@@ -83,4 +85,4 @@ Route::middleware('auth')->group(function(){
 // Route::get('/user/{id_role}', [RoleController::class, 'getRole']);
 
 
-
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

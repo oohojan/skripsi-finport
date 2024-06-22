@@ -30,7 +30,7 @@ class ProfileController extends Controller
             'email' => 'required|email|max:255',
             'no_telepon' => 'required|string|max:15',
             'address' => 'required|string|max:255',
-            'password' => 'string|max:30',
+            'password' => 'nullable|string|max:30',
         ]);
 
         $user = Auth::user();
@@ -38,7 +38,9 @@ class ProfileController extends Controller
         $user->email = $request->email;
         $user->No_Telepon = $request->no_telepon;
         $user->address = $request->address;
-        $user->password = bcrypt($request->password);
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+        }
 
         if ($user->save()) {
             return redirect()->route('profile')->with('success', 'Profile updated successfully.');

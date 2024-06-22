@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $umkmId = $user->umkm->id;
 
         $transaksi = Transaksi::where('id_umkm', $umkmId)
-                    ->whereDate('tanggal_transaksi', today()->addDays(1))
+                    ->whereDate('tanggal_transaksi', today())
                     ->get();
 
         return view('dashboard_owner', ['count_barang' => $countBarang, 'count_pemasok' => $countPemasok, 'count_pelanggan' => $countPelanggan, 'transaksi' => $transaksi]);

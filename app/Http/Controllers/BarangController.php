@@ -17,7 +17,7 @@ class BarangController extends Controller
 
     public function create($id)
     {
-        $umkm = UMKM::find($id);
+        $umkm = Umkm::find($id);
         return view('barang', ['action' => 'create', 'umkm' => $umkm]);
     }
 
@@ -27,7 +27,10 @@ class BarangController extends Controller
         $barang->id_umkm = $request->id_umkm;
         $barang->nama_barang = $request->nama_barang;
         $barang->harga_barang = $request->harga_barang;
-        $barang->jumlah_barang = $request->jumlah_barang;
+        $barang->harga_beli = $request->harga_beli;
+        $barang->stok_awal_barang = $request->stok_awal_barang;
+        $barang->jumlah_barang = $request->jumlah_barang ?? 0; // Set default value if not provided
+        $barang->input_bulan = $request->input_bulan;
         $barang->save();
 
         return redirect()->route('barang.index', $request->id_umkm)->with('success', 'Barang added successfully');
@@ -44,7 +47,10 @@ class BarangController extends Controller
         $barang = Barang::find($request->id);
         $barang->nama_barang = $request->nama_barang;
         $barang->harga_barang = $request->harga_barang;
-        $barang->jumlah_barang = $request->jumlah_barang;
+        $barang->harga_beli = $request->harga_beli;
+        $barang->stok_awal_barang = $request->stok_awal_barang;
+        $barang->jumlah_barang = $request->jumlah_barang ?? $barang->jumlah_barang; // Preserve current value if not provided
+        $barang->input_bulan = $request->input_bulan;
         $barang->save();
 
         return redirect()->route('barang.index', $barang->id_umkm)->with('success', 'Barang updated successfully');

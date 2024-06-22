@@ -52,9 +52,9 @@ class AuthController extends Controller
     public function registerUser(Request $request){
         $validate = $request->validate([
             'Nama' => 'required|max:255',
-            'email' => 'required|unique:users|max:255,',
-            'password' => 'required|max:255',
-            'No_Telepon' => 'max:255',
+            'email' => 'required|unique:users|max:255|regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/',
+            'password' => 'required|max:255|min:8',
+            'No_Telepon' => 'max:255|min:12',
             'address' => 'max:255',
         ]);
 
@@ -65,6 +65,8 @@ class AuthController extends Controller
         'No_Telepon' => $request->No_Telepon,
         'address' => $request->address,
         ]);
+
+        $user->sendEmailVerificationNotification();
 
         session()->flash('success', 'Akun berhasil diregister, Silahkan Login');
 

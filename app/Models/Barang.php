@@ -12,7 +12,7 @@ class Barang extends Model
     protected $table = 'barang';
 
     protected $fillable = [
-        'id_umkm', 'nama_barang', 'harga_barang', 'jumlah_barang'
+        'id_umkm', 'nama_barang', 'harga_barang', 'harga_beli', 'input_bulan', 'stok_awal_barang'
     ];
 
     public function umkm()

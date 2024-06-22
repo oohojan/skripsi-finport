@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\DetailTransaksi;
 use App\Models\Pelanggan;
 use App\Models\Transaksi;
+use App\Models\Umkm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,7 +61,27 @@ class TransaksiController extends Controller
     public function addTransaksi()
     {
         $user = Auth::user();
-        $umkmId = $user->umkm->id;
+        if ($user->id_role == 1) {
+            // If the user is an owner, get the UMKM ID from the user's UMKM relationship
+            if (!$user->umkm) {
+                return redirect()->route('transaksi')->with('error', 'UMKM tidak ditemukan.');
+            }
+            $umkmId = $user->umkm->id;
+        } elseif ($user->id_role == 2) {
+            // If the user is an employee, get the UMKM ID from the first UMKM they are associated with
+            $umkm = Umkm::whereHas('employees', function ($query) use ($user) {
+                $query->where('id_user', $user->id);
+            })->first();
+
+            if (!$umkm) {
+                return redirect()->route('transaksi')->with('error', 'UMKM tidak ditemukan.');
+            }
+
+            $umkmId = $umkm->id;
+        } else {
+            // If the user does not have a valid role, redirect back with an error
+            return redirect()->route('transaksi')->with('error', 'Role user tidak valid.');
+        }
 
         // Ambil pelanggan yang terkait dengan UMKM
         $pelanggan = Pelanggan::where('id_umkm', $umkmId)->get();
@@ -143,7 +164,16 @@ class TransaksiController extends Controller
     {
         $transaksi = Transaksi::findOrFail($id);
         $user = Auth::user();
-        $umkmId = $user->umkm->id;
+        if ($user->id_role == 1) {
+            // If the user is an owner, get the UMKM ID from the user's UMKM relationship
+            $umkmId = $user->umkm->id;
+        } elseif ($user->id_role == 2) {
+            // If the user is an employee, get the UMKM ID from the transaction's UMKM relationship
+            $umkmId = $transaksi->id_umkm;
+        } else {
+            // If the user does not have a valid role, redirect back with an error
+            return redirect()->route('transaksi')->with('error', 'Role user tidak valid.');
+        }
         $pelanggan = Pelanggan::where('id_umkm', $umkmId)->get();
 
         return view('edit-transaksi', compact('transaksi', 'pelanggan'));

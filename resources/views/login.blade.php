@@ -41,11 +41,11 @@
             <form action="" method="post">
                 @csrf
                 <div>
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label">Email <span style="color: red;">*</label>
                     <input type="text" name="email" id="email" class="form-control" required>
                 </div>
                 <div>
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">Password <span style="color: red;">*</label>
                     <input type="password" name="password" id="password" class="form-control" required>
                 </div>
                 <div>

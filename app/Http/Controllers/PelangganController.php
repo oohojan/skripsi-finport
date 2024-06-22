@@ -43,25 +43,66 @@ class PelangganController extends Controller
 
     public function add(){
         $user = Auth::user();
-        $umkm = Umkm::where('id_user', $user->id)->first();
-        return view('add-pelanggan', ['umkm' => $umkm]);
+        if ($user->id_role == 1) {
+            // If the user is an owner, get the UMKM ID from the user's UMKM relationship
+            if (!$user->umkm) {
+                return redirect()->route('pelanggan')->with('error', 'UMKM tidak ditemukan.');
+            }
+            $umkmId = $user->umkm->id;
+        } elseif ($user->id_role == 2) {
+            // If the user is an employee, get the UMKM ID from the first UMKM they are associated with
+            $umkm = Umkm::whereHas('employees', function ($query) use ($user) {
+                $query->where('id_user', $user->id);
+            })->first();
+
+            if (!$umkm) {
+                return redirect()->route('pelanggan')->with('error', 'UMKM tidak ditemukan.');
+            }
+
+            $umkmId = $umkm->id;
+        } else {
+            // If the user does not have a valid role, redirect back with an error
+            return redirect()->route('pelanggan')->with('error', 'Role user tidak valid.');
+        }
+        return view('add-pelanggan', ['umkmId' => $umkmId]);
     }
 
-    public function store(Request $request){
-
-        $validated =$request->validate([
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
             'nama' => 'required|max:100',
             'no_telepon' => 'max:100',
             'alamat' => 'max:255',
         ]);
 
         $user = Auth::user();
-        $umkm = Umkm::where('id_user', $user->id)->first();
+
+        // Determine the UMKM ID based on the user's role
+        if ($user->id_role == 1) {
+            // If the user is an owner
+            $umkm = Umkm::where('id_user', $user->id)->first();
+            if (!$umkm) {
+                return redirect()->route('pelanggan')->with('error', 'UMKM tidak ditemukan.');
+            }
+            $umkmId = $umkm->id;
+        } elseif ($user->id_role == 2) {
+            // If the user is an employee
+            $employee = Employee::where('id_user', $user->id)->first();
+            if (!$employee) {
+                return redirect()->route('pelanggan')->with('error', 'UMKM tidak ditemukan.');
+            }
+            $umkmId = $employee->id_umkm;
+        } else {
+            // Invalid role
+            return redirect()->route('pelanggan')->with('error', 'Role user tidak valid.');
+        }
+
         $pelanggan = new Pelanggan();
         $pelanggan->fill($request->all());
-        $pelanggan->id_umkm = $umkm->id;
+        $pelanggan->id_umkm = $umkmId;
         $pelanggan->save();
-        return redirect ('pelanggan')->with('status', 'Pemasok Berhasil Didaftarkan!');
+
+        return redirect()->route('pelanggan')->with('status', 'Pelanggan berhasil didaftarkan!');
     }
 
     public function edit($id)

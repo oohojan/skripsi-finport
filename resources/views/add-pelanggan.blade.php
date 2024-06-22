@@ -24,7 +24,7 @@
 
         <form action="add-pelanggan" method="post">
             @csrf
-            <input type="hidden" name="id_umkm" value="{{ $umkm->id }}">
+            <input type="hidden" name="id_umkm" value="{{ $umkmId }}">
             <div>
                 <label for="nama" class="form-label">Name</label>
                 <input type="nama" name="nama" id="nama" class="form-control" required>

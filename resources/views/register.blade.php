@@ -43,20 +43,20 @@
             <form action="" method="post">
                 @csrf
                 <div>
-                    <label for="Nama" class="form-label">Nama</label>
-                    <input type="text" name="Nama" id="Nama" class="form-control" required>
+                    <label for="Nama" class="form-label">Nama <span style="color: red;">*</label>
+                    <input type="text" name="Nama" id="Nama" class="form-control" required >
                 </div>
                 <div>
-                    <label for="email" class="form-label">Email</label>
-                    <input type="text" name="email" id="email" class="form-control" required>
+                    <label for="email" class="form-label">Email <span style="color: red;">*</label>
+                    <input type="text" name="email" id="email" class="form-control" placeholder="nama@gmail.com" required>
                 </div>
                 <div>
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" required>
+                    <label for="password" class="form-label">Password <span style="color: red;">*</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="minimal 8 karakter, gabungan Huruf besar dan Huruf Kecil" required>
                 </div>
                 <div>
                     <label for="No_Telepon" class="form-label">No Telepon</label>
-                    <input type="text" name="No_Telepon" id="No_Telepon" class="form-control">
+                    <input type="text" name="No_Telepon" id="No_Telepon" class="form-control" placeholder="minimal 12 karakter">
                 </div>
                 <div>
                     <label for="address" class="form-label">Alamat</label>
