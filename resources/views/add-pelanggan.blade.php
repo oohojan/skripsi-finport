@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <h1>Add Pelanggan Baru</h1>
+    <h1>Add Pelanggan</h1>
 
     <div class="mt-5 d-flex justify-content-end">
         <button onclick="goBack()" class="btn btn-secondary">Back</button>
