@@ -18,7 +18,7 @@
             <select class="form-control" id="id_barang" name="id_barang" required>
                 <option value="">Pilih Barang</option>
                 @foreach ($barang as $item)
-                    <option value="{{ $item->id }}" {{ $item->id === $detailTransaksi->id_barang ? 'selected' : '' }}>{{ $item->nama_barang }}</option>
+                    <option value="{{ $item->id }}" data-harga="{{ $item->harga_barang }}" {{ $item->id == $detailTransaksi->id_barang ? 'selected' : '' }}>{{ $item->nama_barang }}</option>
                 @endforeach
             </select>
         </div>
@@ -28,10 +28,26 @@
         </div>
         <div class="mb-3">
             <label for="harga" class="form-label">Harga Satuan</label>
-            <input type="number" step="0.01" class="form-control" id="harga" name="harga" value="{{ $detailTransaksi->harga }}" required>
+            <input type="number" step="0.01" class="form-control" id="harga" name="harga" value="{{ $detailTransaksi->harga }}" required readonly>
         </div>
         <button type="submit" class="btn btn-primary">Update Detail</button>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var selectBarang = document.getElementById('id_barang');
+    var inputHarga = document.getElementById('harga');
+
+    selectBarang.addEventListener('change', function () {
+        var selectedOption = selectBarang.options[selectBarang.selectedIndex];
+        var harga = selectedOption.getAttribute('data-harga');
+        inputHarga.value = harga;
+    });
+
+    // Trigger change event to set the initial price
+    selectBarang.dispatchEvent(new Event('change'));
+});
+</script>
 
 @endsection

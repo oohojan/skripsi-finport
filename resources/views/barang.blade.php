@@ -61,6 +61,16 @@
     @elseif($action == 'create')
         <h1>Tambah Barang - {{ $umkm->nama_umkm }}</h1>
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('barang.store') }}" method="POST">
             @csrf
             <input type="hidden" name="id_umkm" value="{{ $umkm->id }}">
@@ -107,6 +117,16 @@
     @elseif($action == 'edit')
         <h1>Edit Barang</h1>
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('barang.update') }}" method="POST">
             @csrf
             <input type="hidden" name="id" value="{{ $barang->id }}">
@@ -125,6 +145,10 @@
             <div class="mt-3">
                 <label for="stok_awal_barang">Stok Awal Barang</label>
                 <input type="number" class="form-control" id="stok_awal_barang" name="stok_awal_barang" value="{{ $barang->stok_awal_barang }}" required>
+            </div>
+            <div class="mt-3">
+                <label for="jumlah_barang">Sisa Barang</label>
+                <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang" value="{{ $barang->jumlah_barang }}" required>
             </div>
             <div class="mt-3">
                 <label for="input_bulan">Input Bulan</label>

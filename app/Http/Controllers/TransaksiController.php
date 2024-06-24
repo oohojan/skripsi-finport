@@ -115,7 +115,14 @@ class TransaksiController extends Controller
     public function addDetail($id)
     {
         $transaksi = Transaksi::findOrFail($id);
-        $barang = Barang::where('id_umkm', $transaksi->id_umkm)->get();
+
+        // Mendapatkan bulan transaksi
+        $bulanTransaksi = date('F', strtotime($transaksi->tanggal_transaksi));  // 'F' menghasilkan nama bulan penuh (misalnya, "June")
+
+        // Mendapatkan barang berdasarkan id_umkm dan bulan input
+        $barang = Barang::where('id_umkm', $transaksi->id_umkm)
+                        ->where('input_bulan', $bulanTransaksi)
+                        ->get();
 
         return view('add-detail', compact('transaksi', 'barang'));
     }
@@ -130,6 +137,12 @@ class TransaksiController extends Controller
 
         $transaksi = Transaksi::findOrFail($id);
 
+        // Mendapatkan barang untuk memastikan harga benar
+        $barang = Barang::findOrFail($request->id_barang);
+        if ($request->harga != $barang->harga_barang) {
+            return redirect()->back()->withErrors(['harga' => 'Harga satuan harus sesuai dengan harga barang.']);
+        }
+
         $detailTransaksi = new DetailTransaksi();
         $detailTransaksi->id_transaksi = $transaksi->id;
         $detailTransaksi->id_barang = $request->id_barang;
@@ -138,7 +151,6 @@ class TransaksiController extends Controller
         $detailTransaksi->save();
 
         // Kurangi jumlah_barang di tabel barang
-        $barang = Barang::findOrFail($request->id_barang);
         $barang->jumlah_barang -= $request->jumlah;
         $barang->save();
 
@@ -201,7 +213,15 @@ class TransaksiController extends Controller
     public function editDetail($id)
     {
         $detailTransaksi = DetailTransaksi::findOrFail($id);
-        $barang = Barang::where('id_umkm', $detailTransaksi->transaksi->id_umkm)->get();
+        $transaksi = $detailTransaksi->transaksi;
+
+        // Mendapatkan bulan transaksi
+        $bulanTransaksi = date('F', strtotime($transaksi->tanggal_transaksi)); // 'F' menghasilkan nama bulan penuh (misalnya, "June")
+
+        // Mendapatkan barang berdasarkan id_umkm dan bulan input
+        $barang = Barang::where('id_umkm', $transaksi->id_umkm)
+                        ->where('input_bulan', $bulanTransaksi)
+                        ->get();
 
         return view('edit-detail', compact('detailTransaksi', 'barang'));
     }
@@ -215,27 +235,11 @@ class TransaksiController extends Controller
         ]);
 
         $detailTransaksi = DetailTransaksi::findOrFail($id);
-        $transaksi = $detailTransaksi->transaksi;
+        $barang = Barang::findOrFail($request->id_barang);
 
-        // Check if the barang is different
-        if ($detailTransaksi->id_barang != $request->id_barang) {
-            // Restore previous quantity to barang lama
-            $barangLama = Barang::findOrFail($detailTransaksi->id_barang);
-            $barangLama->jumlah_barang += $detailTransaksi->jumlah;
-            $barangLama->save();
-
-            // Deduct new quantity from barang baru
-            $barangBaru = Barang::findOrFail($request->id_barang);
-            $barangBaru->jumlah_barang -= $request->jumlah;
-            $barangBaru->save();
-        } else {
-            // If barang is the same, calculate the difference in quantity
-            $difference = $request->jumlah - $detailTransaksi->jumlah;
-
-            // Adjust barang quantity accordingly
-            $barang = Barang::findOrFail($request->id_barang);
-            $barang->jumlah_barang -= $difference;
-            $barang->save();
+        // Pastikan harga sesuai dengan harga barang
+        if ($request->harga != $barang->harga_barang) {
+            return redirect()->back()->withErrors(['harga' => 'Harga satuan harus sesuai dengan harga barang.']);
         }
 
         // Update detail transaksi
@@ -244,6 +248,18 @@ class TransaksiController extends Controller
         $detailTransaksi->harga = $request->harga;
         $detailTransaksi->save();
 
-        return redirect()->route('transaksi-detail', ['id' => $transaksi->id])->with('success', 'Detail transaksi berhasil diupdate.');
+        // Kurangi jumlah barang jika berubah
+        $barangAsal = Barang::findOrFail($detailTransaksi->id_barang);
+        if ($barangAsal->id != $barang->id) {
+            $barangAsal->jumlah_barang += $detailTransaksi->jumlah; // Tambah kembali jumlah pada barang asal
+            $barang->jumlah_barang -= $request->jumlah; // Kurangi jumlah pada barang baru
+            $barangAsal->save();
+        } else {
+            $barangAsal->jumlah_barang += ($detailTransaksi->jumlah - $request->jumlah);
+        }
+
+        $barang->save();
+
+        return redirect()->route('transaksi-detail', ['id' => $detailTransaksi->id_transaksi])->with('success', 'Detail transaksi berhasil diperbarui.');
     }
 }

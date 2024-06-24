@@ -3,23 +3,27 @@
 @section('title', 'Laporan Keuangan')
 
 @section('content')
-    <h1>Laporan Keuangan</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Bulan</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($laporan as $bulan => $data)
-                <tr>
-                    <td>{{ $bulan }}</td>
-                    <td>
-                        <button onclick="location.href='{{ url('laporan/'.$bulan) }}'">View</button>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class="container mt-4">
+        <h1 class="mb-4">Laporan Keuangan</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Bulan</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($laporan as $bulan => $data)
+                        <tr>
+                            <td>{{ $bulan }}</td>
+                            <td>
+                                <a href="{{ url('laporan/'.$bulan) }}" class="btn btn-primary">View</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 @endsection

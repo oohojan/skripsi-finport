@@ -23,13 +23,21 @@ class BarangController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'nama_barang' => 'required|string|max:255',
+            'harga_barang' => 'required|numeric|min:0',
+            'harga_beli' => 'required|numeric|min:0',
+            'stok_awal_barang' => 'required|integer|min:0',
+            'input_bulan' => 'required|string|max:255'
+        ]);
+
         $barang = new Barang;
         $barang->id_umkm = $request->id_umkm;
         $barang->nama_barang = $request->nama_barang;
         $barang->harga_barang = $request->harga_barang;
         $barang->harga_beli = $request->harga_beli;
         $barang->stok_awal_barang = $request->stok_awal_barang;
-        $barang->jumlah_barang = $request->jumlah_barang ?? 0; // Set default value if not provided
+        $barang->jumlah_barang = $request->stok_awal_barang; // Set default value if not provided
         $barang->input_bulan = $request->input_bulan;
         $barang->save();
 
@@ -44,12 +52,21 @@ class BarangController extends Controller
 
     public function update(Request $request)
     {
-        $barang = Barang::find($request->id);
+        $request->validate([
+            'nama_barang' => 'required|string|max:255',
+            'harga_barang' => 'required|numeric|min:0',
+            'harga_beli' => 'required|numeric|min:0',
+            'stok_awal_barang' => 'required|integer|min:0',
+            'jumlah_barang' => 'required|integer|min:0', // Tambahkan validasi untuk jumlah_barang
+            'input_bulan' => 'required|string|max:255'
+        ]);
+
+        $barang = Barang::findOrFail($request->id);
         $barang->nama_barang = $request->nama_barang;
         $barang->harga_barang = $request->harga_barang;
         $barang->harga_beli = $request->harga_beli;
         $barang->stok_awal_barang = $request->stok_awal_barang;
-        $barang->jumlah_barang = $request->jumlah_barang ?? $barang->jumlah_barang; // Preserve current value if not provided
+        $barang->jumlah_barang = $request->jumlah_barang; // Update jumlah_barang
         $barang->input_bulan = $request->input_bulan;
         $barang->save();
 
