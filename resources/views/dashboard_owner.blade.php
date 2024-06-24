@@ -50,49 +50,8 @@
 
     <div class="mt-5">
         <h3>Daftar Transaksi Hari ini</h3>
-        @if ($transaksi->count() > 0)
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Tanggal Transaksi</th>
-                    <th>Jenis Transaksi</th>
-                    <th>Nama Pelanggan</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($transaksi as $index => $item)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $item->tanggal_transaksi }}</td>
-                    <td>{{ $item->jenis_transaksi }}</td>
-                    <td>{{ $item->pelanggan->nama }}</td>
-                    <td>
-                        <a href="{{ route('transaksi-detail', ['id' => $item->id]) }}" class="btn btn-primary">Detail</a>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        @else
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Tanggal Transaksi</th>
-                        <th>Jenis Transaksi</th>
-                        <th>Nama Pelanggan</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="4" style="text-align: center">Tidak ada data transaksi hari ini.</td>
-                    </tr>
-                </tbody>
-            </table>
-        @endif
+        @include('partials.transaksi', ['transaksi' => $transaksi])
+    </div>
 
 
     </div>

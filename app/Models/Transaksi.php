@@ -29,4 +29,22 @@ class Transaksi extends Model
     {
         return $this->hasMany(DetailTransaksi::class, 'id_transaksi');
     }
+
+    public function scopeTodayTransactions($query, $umkmId = null)
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            return $query->whereDate('tanggal_transaksi', today());
+        }
+
+        $umkmId = $umkmId ?? optional($user->umkm)->id;
+
+        if (!$umkmId) {
+            return $query->whereDate('tanggal_transaksi', today());
+        }
+
+        return $query->where('id_umkm', $umkmId)
+                    ->whereDate('tanggal_transaksi', today());
+    }
 }

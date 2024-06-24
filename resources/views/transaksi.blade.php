@@ -24,6 +24,14 @@
         <a href="{{ route('transaksi.addTransaksi') }}" class="btn btn-primary">Add</a>
     </div>
 
+    <form action="{{ route('transaksi') }}" method="GET" class="mt-3">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" name="search" placeholder="Search by Keterangan or Nama Pelanggan" value="{{ request('search') }}">
+            <input type="date" class="form-control" name="date" placeholder="Search by Tanggal Transaksi" value="{{ request('date') }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+
     <div class="my-5">
         <table class="table">
             <thead>

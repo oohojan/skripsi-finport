@@ -14,6 +14,14 @@
     <a href="{{ route('transaksi.addDetail', ['id' => $transaksi->id]) }}" class="btn btn-primary">Add Detail</a>
 </div>
 
+<!-- Formulir Pencarian -->
+<form action="{{ route('transaksi-detail', ['id' => $transaksi->id]) }}" method="GET" class="mt-3">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="search" placeholder="Search by Nama Barang" value="{{ request('search') }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
 <div class="my-5">
     <table class="table">
         <thead>
@@ -27,7 +35,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($transaksi->detailTransaksi as $index => $detail)
+            @foreach ($detailTransaksi as $index => $detail)
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $detail->barang->nama_barang }}</td>

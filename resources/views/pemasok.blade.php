@@ -19,6 +19,13 @@
         @endif
     </div>
 
+    <form action="{{ route('pemasok') }}" method="GET" class="mt-3">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" name="search" placeholder="Search by Name" value="{{ request('search') }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+
     <div class="my-5">
         <table class="table">
             <thead>

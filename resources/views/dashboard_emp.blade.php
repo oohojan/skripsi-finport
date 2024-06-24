@@ -6,6 +6,8 @@
 
     <h1>Welcome to the Apps, {{Auth::user()->Nama}}</h1>
 
+    @if (Auth::user()->have_business == 0)
+
     <div class="mt-5">
         <h4>Apakah kamu ingin menjadi Employee atau menjadi Owner?, silahkan pilih!</h4>
     </div>
@@ -36,6 +38,13 @@
             </div>
         </div>
     </div>
+
+    @elseif (Auth::user()->have_business == 1)
+    <div class="mt-5">
+        <h3>Daftar Transaksi Hari ini</h3>
+        @include('partials.transaksi', ['transaksi' => $transaksi])
+    </div>
+    @endif
 
 
 @endsection

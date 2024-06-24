@@ -12,33 +12,59 @@ use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
 {
-    public function transaksi()
+    public function transaksi(Request $request)
     {
-        // Ambil ID user yang sedang login
         $userId = Auth::user()->id;
+        $search = $request->input('search');
+        $date = $request->input('date');
 
-        // Cek apakah user merupakan owner atau employee
         if (Auth::user()->id_role == 1) {
             $user = Auth::user();
             $umkmId = $user->umkm->id;
-            // Jika owner, ambil transaksi berdasarkan umkm yang dimilikinya
-            $transaksi = Transaksi::where('id_umkm', $umkmId)->get();
+            $query = Transaksi::where('id_umkm', $umkmId);
         } elseif (Auth::user()->id_role == 2) {
-            // Jika employee, ambil transaksi berdasarkan umkm tempat dia bekerja
-            $transaksi = Transaksi::whereHas('umkm', function ($query) use ($userId) {
+            $query = Transaksi::whereHas('umkm', function ($query) use ($userId) {
                 $query->whereHas('employees', function ($query) use ($userId) {
                     $query->where('id_user', $userId);
                 });
-            })->get();
+            });
         }
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('keterangan', 'LIKE', "%{$search}%")
+                    ->orWhereHas('pelanggan', function ($q) use ($search) {
+                        $q->where('nama', 'LIKE', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($date) {
+            $query->whereDate('tanggal_transaksi', $date);
+        }
+
+        $transaksi = $query->get();
 
         return view('transaksi', compact('transaksi'));
     }
 
-    public function detail($id)
+    public function detail(Request $request, $id)
     {
+        $search = $request->input('search');
+
+        // Ambil transaksi beserta detail dan relasi barang
         $transaksi = Transaksi::with(['pelanggan', 'detailTransaksi.barang'])->find($id);
-        return view('transaksi-detail', compact('transaksi'));
+
+        if ($search) {
+            // Filter detail transaksi berdasarkan nama barang
+            $detailTransaksi = $transaksi->detailTransaksi->filter(function ($detail) use ($search) {
+                return stripos($detail->barang->nama_barang, $search) !== false;
+            });
+        } else {
+            $detailTransaksi = $transaksi->detailTransaksi;
+        }
+
+        return view('transaksi-detail', compact('transaksi', 'detailTransaksi'));
     }
 
     public function destroy($id)

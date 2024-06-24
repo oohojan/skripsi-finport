@@ -12,26 +12,28 @@ class DashboardController extends Controller
 {
     public function dash_owner()
     {
-        $id_umkm = Auth::user()->id;
+        $umkmId = Auth::user()->umkm->id;
 
-        $countBarang = Barang::where('id_umkm', $id_umkm)->count();
+        $countBarang = Barang::where('id_umkm', $umkmId)->count();
+        $countPemasok = Pemasok::where('id_umkm', $umkmId)->count();
+        $countPelanggan = Pelanggan::where('id_umkm', $umkmId)->count();
 
-        $countPemasok = Pemasok::where('id_umkm', $id_umkm)->count();
+        $transaksi = Transaksi::todayTransactions($umkmId)->get();
 
-        $countPelanggan = Pelanggan::where('id_umkm', $id_umkm)->count();
-
-        $user = Auth::user();
-        $umkmId = $user->umkm->id;
-
-        $transaksi = Transaksi::where('id_umkm', $umkmId)
-                    ->whereDate('tanggal_transaksi', today())
-                    ->get();
-
-        return view('dashboard_owner', ['count_barang' => $countBarang, 'count_pemasok' => $countPemasok, 'count_pelanggan' => $countPelanggan, 'transaksi' => $transaksi]);
+        return view('dashboard_owner', [
+            'count_barang' => $countBarang,
+            'count_pemasok' => $countPemasok,
+            'count_pelanggan' => $countPelanggan,
+            'transaksi' => $transaksi
+        ]);
     }
 
     public function dash_emp()
     {
-        return view('dashboard_emp');
+        $transaksi = Transaksi::todayTransactions()->get();
+
+        return view('dashboard_emp', [
+            'transaksi' => $transaksi
+        ]);
     }
 }

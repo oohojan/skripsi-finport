@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PelangganController extends Controller
 {
-    public function pelanggan()
+    public function pelanggan(Request $request)
     {
         $user = Auth::user();
 
@@ -20,22 +20,30 @@ class PelangganController extends Controller
             $umkm = Umkm::where('id_user', $user->id)->first();
 
             if ($umkm) {
-                $pelanggan = Pelanggan::where('id_umkm', $umkm->id)->get();
+                $query = Pelanggan::where('id_umkm', $umkm->id);
             } else {
-                $pelanggan = collect();
+                $query = Pelanggan::where('id_umkm', null); // Atau bisa diganti dengan collect() jika tidak ingin menampilkan data jika UMKM tidak ditemukan
             }
         } elseif ($user->id_role == 2) {
             // Jika pengguna adalah employee
             $employee = Employee::where('id_user', $user->id)->first();
 
             if ($employee) {
-                $pelanggan = Pelanggan::where('id_umkm', $employee->id_umkm)->get();
+                $query = Pelanggan::where('id_umkm', $employee->id_umkm);
             } else {
-                $pelanggan = collect();
+                $query = Pelanggan::where('id_umkm', null); // Atau bisa diganti dengan collect() jika tidak ingin menampilkan data jika UMKM tidak ditemukan
             }
         } else {
             // Peran tidak valid
             abort(403, 'Unauthorized action.');
+        }
+
+        // Filter berdasarkan pencarian
+        $search = $request->input('search');
+        if ($search) {
+            $pelanggan = $query->where('nama', 'LIKE', '%' . $search . '%')->get();
+        } else {
+            $pelanggan = $query->get();
         }
 
         return view('pelanggan', ['pelanggan' => $pelanggan]);

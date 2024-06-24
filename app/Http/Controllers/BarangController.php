@@ -8,10 +8,19 @@ use Illuminate\Http\Request;
 
 class BarangController extends Controller
 {
-    public function index($id)
+    public function index(Request $request, $id)
     {
-        $umkm = Umkm::find($id);
-        $barangs = Barang::where('id_umkm', $id)->get();
+        $umkm = Umkm::findOrFail($id);
+        $search = $request->input('search');
+
+        if ($search) {
+            $barangs = Barang::where('id_umkm', $id)
+                ->where('nama_barang', 'LIKE', "%{$search}%")
+                ->get();
+        } else {
+            $barangs = Barang::where('id_umkm', $id)->get();
+        }
+
         return view('barang', ['action' => 'index', 'umkm' => $umkm, 'barangs' => $barangs]);
     }
 

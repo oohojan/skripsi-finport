@@ -9,14 +9,20 @@ use Illuminate\Support\Facades\Auth;
 
 class PemasokController extends Controller
 {
-    public function pemasok(){
-
+    public function pemasok(Request $request)
+    {
         $user = Auth::user();
-
         $umkm = Umkm::where('id_user', $user->id)->first();
+        $search = $request->input('search');
 
         if ($umkm) {
-            $pemasok = Pemasok::where('id_umkm', $umkm->id)->get();
+            $query = Pemasok::where('id_umkm', $umkm->id);
+
+            if ($search) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            }
+
+            $pemasok = $query->get();
         } else {
             $pemasok = collect();
         }

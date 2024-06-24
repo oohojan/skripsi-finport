@@ -25,6 +25,13 @@
             <a href="{{ route('barang.create', $umkm->id) }}" class="btn btn-primary">Add Barang</a>
         </div>
 
+        <form action="{{ route('barang.index', $umkm->id) }}" method="GET" class="mt-3">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search by Nama Barang" value="{{ request('search') }}">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+
         <table class="table mt-3">
             <thead>
                 <tr>

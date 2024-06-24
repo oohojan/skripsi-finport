@@ -14,10 +14,21 @@
         <a href="add-pelanggan" class="btn btn-primary">Add</a>
     </div>
 
+    <div class="mt-3">
+        <form action="{{ route('pelanggan') }}" method="GET" class="form-inline mt-3">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search by Name" value="{{ request('search') }}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <div class="mt-5">
         @if (session('status'))
             <div class="alert alert-success">
-                {{session('status')}}
+                {{ session('status') }}
             </div>
         @endif
     </div>
@@ -36,10 +47,10 @@
             <tbody>
                 @foreach ($pelanggan as $item)
                     <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$item->nama}}</td>
-                        <td>{{$item->no_telepon}}</td>
-                        <td>{{$item->alamat}}</td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $item->nama }}</td>
+                        <td>{{ $item->no_telepon }}</td>
+                        <td>{{ $item->alamat }}</td>
                         <td>
                             <div class="action-buttons">
                                 <form action="{{ route('edit-pelanggan', $item->id) }}">
@@ -60,8 +71,10 @@
     @endif
 @endsection
 
+@section('scripts')
     <script>
         function confirmDelete() {
             return confirm('Are you sure you want to delete this data?');
         }
     </script>
+@endsection
