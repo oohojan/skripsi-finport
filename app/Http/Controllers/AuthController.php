@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EmailVerification;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -26,14 +30,23 @@ class AuthController extends Controller
             'password' => ['required']
         ]);
 
-        if(Auth::attempt($credentials)){
-            //dd(Auth::user());
-            //$request->session()->regenerate();
-            if(Auth::user()->id_role == 1){
-                return redirect('dashboard_owner');
+        $user = User::where('email', $credentials['email'])->first();
+
+        if ($user) {
+            if (!$user->hasVerifiedEmail()) {
+                return redirect('login')->withErrors(['email' => 'Your email address is not verified.']);
             }
-            if(Auth::user()->id_role == 2){
-                return redirect('dashboard_emp');
+
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+
+                $user = Auth::user();
+                if($user->id_role == 1){
+                    return redirect('dashboard_owner');
+                }
+                if($user->id_role == 2){
+                    return redirect('dashboard_emp');
+                }
             }
         }
 
@@ -49,7 +62,8 @@ class AuthController extends Controller
         return redirect('login');
     }
 
-    public function registerUser(Request $request){
+    public function registerUser(Request $request)
+    {
         $validate = $request->validate([
             'Nama' => 'required|max:255',
             'email' => 'required|unique:users|max:255|regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/',
@@ -59,17 +73,18 @@ class AuthController extends Controller
         ]);
 
         $user = User::create([
-        'Nama' => $request->Nama,
-        'email' => $request->email,
-        'password' => bcrypt($request->password),
-        'No_Telepon' => $request->No_Telepon,
-        'address' => $request->address,
+            'Nama' => $request->Nama,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'No_Telepon' => $request->No_Telepon,
+            'address' => $request->address,
         ]);
 
-        $user->sendEmailVerificationNotification();
+        event(new Registered($user));
 
-        session()->flash('success', 'Akun berhasil diregister, Silahkan Login');
+        Auth::login($user);
 
-        return redirect('login');
+        return redirect('/email/verify');
     }
+
 }

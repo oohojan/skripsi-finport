@@ -10,26 +10,45 @@ use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PemasokController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransaksiController;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
 })->middleware('auth');
-
+    Route::get('login', [AuthController::class, 'login'])->name('login');
+    Route::post('login', [AuthController::class, 'authenticating'])->name('login');
 Route::middleware('only_guest')->group(function(){
-    Route::get('login',[AuthController::class, 'login'])->name('login');
-    Route::post('login',[AuthController::class, 'authenticating']);
-    Route::get('register',[AuthController::class, 'register']);
-    Route::post('register',[AuthController::class, 'registerUser']);
-    Route::get('user/verify/{token}', [AuthController::class, 'verifyEmail']);
+
+    Route::get('register', [AuthController::class, 'register']);
+    Route::post('register', [AuthController::class, 'registerUser']);
 });
 
-Route::middleware('auth')->group(function(){
+Route::middleware('auth')->group(function () {
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->middleware('auth')->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+
+        return redirect('login');
+    })->middleware(['auth', 'signed'])->name('verification.verify');
+
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+
+        return back()->with('message', 'Verification link sent!');
+    })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+});
+
+
+Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('dashboard_owner', [DashboardController::class, 'dash_owner'])->middleware('only_owner')->name('dashboard_owner');
     Route::get('dashboard_emp', [DashboardController::class, 'dash_emp'])->middleware('only_emp')->name('dashboard_emp');
 
-    Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
+    Route::get('profile', [ProfileController::class, 'profile'])->name('profile')->middleware('verified');;
     Route::get('edit-profile', [ProfileController::class, 'editProfile'])->name('profile.edit');
     Route::put('profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
@@ -81,8 +100,3 @@ Route::middleware('auth')->group(function(){
     Route::post('join-umkm/{id}', [BisnisController::class, 'joinUmkm'])->name('join-umkm');
 });
 
-// Route::get('/register', [RoleController::class, 'index']);
-// Route::get('/user/{id_role}', [RoleController::class, 'getRole']);
-
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
