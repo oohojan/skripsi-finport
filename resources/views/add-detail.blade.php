@@ -13,7 +13,7 @@
     <form action="{{ route('transaksi.storeDetail', ['id' => $transaksi->id]) }}" method="post">
         @csrf
         <div class="mb-3">
-            <label for="id_barang" class="form-label">Barang</label>
+            <label for="id_barang" class="form-label">Nama Barang<span style="color: red;">*</label>
             <select class="form-control" id="id_barang" name="id_barang" required>
                 <option value="">Pilih Barang</option>
                 @foreach ($barang as $item)
@@ -22,7 +22,7 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="jumlah" class="form-label">Jumlah</label>
+            <label for="jumlah" class="form-label">Jumlah<span style="color: red;">*</label>
             <input type="number" class="form-control" id="jumlah" name="jumlah" required>
         </div>
         <div class="mb-3">

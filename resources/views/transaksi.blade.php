@@ -65,6 +65,9 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="d-flex justify-content-center">
+            {{ $transaksi->links('pagination::bootstrap-4') }}
+        </div>
     </div>
     @endif
 @endsection

@@ -23,11 +23,11 @@
         <form action="{{ route('transaksi.store') }}" method="post">
             @csrf
             <div class="mb-3">
-                <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi</label>
+                <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi <span style="color: red;">*</label>
                 <input type="date" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi" required>
             </div>
             <div class="mb-3">
-                <label for="jenis_transaksi" class="form-label">Jenis Transaksi</label>
+                <label for="jenis_transaksi" class="form-label">Jenis Transaksi <span style="color: red;">*</label>
                 <select class="form-control" id="jenis_transaksi" name="jenis_transaksi" required>
                     <option value="">Pilih Jenis Transaksi</option>
                     <option value="cash">Cash</option>
@@ -41,7 +41,7 @@
                 <input type="text" class="form-control" id="keterangan" name="keterangan">
             </div>
             <div class="mb-3">
-                <label for="id_pelanggan" class="form-label">Nama Pelanggan</label>
+                <label for="id_pelanggan" class="form-label">Nama Pelanggan <span style="color: red;">*</label>
                 <select class="form-control" id="id_pelanggan" name="id_pelanggan" required>
                     <option value="">Pilih Pelanggan</option>
                     @foreach ($pelanggan as $item)

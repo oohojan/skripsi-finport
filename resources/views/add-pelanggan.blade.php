@@ -26,7 +26,7 @@
             @csrf
             <input type="hidden" name="id_umkm" value="{{ $umkmId }}">
             <div>
-                <label for="nama" class="form-label">Name</label>
+                <label for="nama" class="form-label">Name <span style="color: red;">*</label>
                 <input type="nama" name="nama" id="nama" class="form-control" required>
             </div>
             <div>

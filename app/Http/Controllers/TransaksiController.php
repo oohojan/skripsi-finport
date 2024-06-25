@@ -8,6 +8,7 @@ use App\Models\Pelanggan;
 use App\Models\Transaksi;
 use App\Models\Umkm;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
@@ -45,6 +46,8 @@ class TransaksiController extends Controller
 
         $transaksi = $query->get();
 
+        $transaksi = $query->paginate(10);
+
         return view('transaksi', compact('transaksi'));
     }
 
@@ -52,11 +55,9 @@ class TransaksiController extends Controller
     {
         $search = $request->input('search');
 
-        // Ambil transaksi beserta detail dan relasi barang
         $transaksi = Transaksi::with(['pelanggan', 'detailTransaksi.barang'])->find($id);
 
         if ($search) {
-            // Filter detail transaksi berdasarkan nama barang
             $detailTransaksi = $transaksi->detailTransaksi->filter(function ($detail) use ($search) {
                 return stripos($detail->barang->nama_barang, $search) !== false;
             });
@@ -64,7 +65,18 @@ class TransaksiController extends Controller
             $detailTransaksi = $transaksi->detailTransaksi;
         }
 
-        return view('transaksi-detail', compact('transaksi', 'detailTransaksi'));
+        // Pagination
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $itemCollection = collect($detailTransaksi);
+        $currentPageItems = $itemCollection->slice(($currentPage - 1) * $perPage, $perPage)->all();
+        $paginatedItems = new LengthAwarePaginator($currentPageItems, count($itemCollection), $perPage);
+        $paginatedItems->setPath($request->url());
+
+        return view('transaksi-detail', [
+            'transaksi' => $transaksi,
+            'detailTransaksi' => $paginatedItems
+        ]);
     }
 
     public function destroy($id)

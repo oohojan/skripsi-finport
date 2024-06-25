@@ -21,18 +21,18 @@
         @endif
 
         <div class="mt-5 d-flex justify-content-end">
-            <button onclick="goBack()" class="btn btn-secondary btn-back">Back</button>
-            <a href="{{ route('barang.create', $umkm->id) }}" class="btn btn-primary">Add Barang</a>
+            <button onclick="goBack()" class="btn btn-secondary btn-back"><i class="bi bi-arrow-left"></i> Back</button>
+            <a href="{{ route('barang.create', $umkm->id) }}" class="btn btn-primary"><i class="bi bi-plus"></i> Add Barang</a>
         </div>
 
         <form action="{{ route('barang.index', $umkm->id) }}" method="GET" class="mt-3">
             <div class="input-group">
                 <input type="text" class="form-control" name="search" placeholder="Search by Nama Barang" value="{{ request('search') }}">
-                <button type="submit" class="btn btn-primary">Search</button>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Search</button>
             </div>
         </form>
 
-        <table class="table mt-3">
+        <table class="table table-striped mt-3">
             <thead>
                 <tr>
                     <th>Nama Barang</th>
@@ -54,17 +54,21 @@
                         <td>{{ $barang->stok_awal_barang }}</td>
                         <td>{{ $barang->input_bulan}}</td>
                         <td>
-                            <a href="{{ route('barang.edit', $barang->id) }}" class="btn btn-warning">Edit</a>
+                            <a href="{{ route('barang.edit', $barang->id) }}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
                             <form action="{{ route('barang.destroy', $barang->id) }}" method="POST" style="display: inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?')"><i class="bi bi-trash3-fill"></i></button>
                             </form>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+
+        <div class="d-flex justify-content-center">
+            {{ $barangs->links('pagination::bootstrap-4') }}
+        </div>
     @elseif($action == 'create')
         <h1>Tambah Barang - {{ $umkm->nama_umkm }}</h1>
 
@@ -82,23 +86,23 @@
             @csrf
             <input type="hidden" name="id_umkm" value="{{ $umkm->id }}">
             <div class="mt-3">
-                <label for="nama_barang">Nama Barang</label>
+                <label for="nama_barang">Nama Barang <span style="color: red;">*</label>
                 <input type="text" class="form-control" id="nama_barang" name="nama_barang" required>
             </div>
             <div class="mt-3">
-                <label for="harga_barang">Harga Jual Barang</label>
+                <label for="harga_barang">Harga Jual Barang <span style="color: red;">*</label>
                 <input type="text" class="form-control" id="harga_barang" name="harga_barang" required>
             </div>
             <div class="mt-3">
-                <label for="harga_beli">Harga Beli</label>
+                <label for="harga_beli">Harga Beli <span style="color: red;">*</label>
                 <input type="text" class="form-control" id="harga_beli" name="harga_beli" required>
             </div>
             <div class="mt-3">
-                <label for="stok_awal_barang">Stok Awal Barang</label>
+                <label for="stok_awal_barang">Stok Awal Barang <span style="color: red;">*</label>
                 <input type="number" class="form-control" id="stok_awal_barang" name="stok_awal_barang" required>
             </div>
             <div class="mt-3">
-                <label for="input_bulan">Input Bulan</label>
+                <label for="input_bulan">Input Bulan <span style="color: red;">*</label>
                 <select class="form-control" id="input_bulan" name="input_bulan" required>
                     <option value="">Pilih Bulan</option>
                     <option value="January">January</option>
@@ -116,8 +120,8 @@
                 </select>
             </div>
             <div class="mt-3">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{{ route('barang.index', $umkm->id) }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> Submit</button>
+                <a href="{{ route('barang.index', $umkm->id) }}" class="btn btn-secondary"><i class="bi bi-x"></i> Cancel</a>
             </div>
 
         </form>
@@ -176,8 +180,8 @@
                 </select>
             </div>
             <div class="mt-3">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{{ url()->previous() }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> Submit</button>
+                <a href="{{ url()->previous() }}" class="btn btn-secondary"><i class="bi bi-x"></i> Cancel</a>
             </div>
 
         </form>

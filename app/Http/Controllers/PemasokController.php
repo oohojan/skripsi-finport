@@ -27,6 +27,8 @@ class PemasokController extends Controller
             $pemasok = collect();
         }
 
+        $pemasok = $query->paginate(10);
+
         return view('pemasok', ['pemasok' => $pemasok]);
     }
 

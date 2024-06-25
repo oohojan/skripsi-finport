@@ -46,6 +46,8 @@ class PelangganController extends Controller
             $pelanggan = $query->get();
         }
 
+        $pelanggan = $query->paginate(10);
+
         return view('pelanggan', ['pelanggan' => $pelanggan]);
     }
 

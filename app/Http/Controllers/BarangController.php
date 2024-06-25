@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Umkm;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class BarangController extends Controller
 {
@@ -21,7 +22,15 @@ class BarangController extends Controller
             $barangs = Barang::where('id_umkm', $id)->get();
         }
 
-        return view('barang', ['action' => 'index', 'umkm' => $umkm, 'barangs' => $barangs]);
+        // Pagination
+        $perPage = 10;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $itemCollection = collect($barangs);
+        $currentPageItems = $itemCollection->slice(($currentPage - 1) * $perPage, $perPage)->all();
+        $paginatedItems = new LengthAwarePaginator($currentPageItems, count($itemCollection), $perPage);
+        $paginatedItems->setPath($request->url());
+
+        return view('barang', ['action' => 'index', 'umkm' => $umkm, 'barangs' => $paginatedItems]);
     }
 
     public function create($id)
@@ -46,7 +55,7 @@ class BarangController extends Controller
         $barang->harga_barang = $request->harga_barang;
         $barang->harga_beli = $request->harga_beli;
         $barang->stok_awal_barang = $request->stok_awal_barang;
-        $barang->jumlah_barang = $request->stok_awal_barang; // Set default value if not provided
+        $barang->jumlah_barang = $request->stok_awal_barang;
         $barang->input_bulan = $request->input_bulan;
         $barang->save();
 
@@ -66,7 +75,7 @@ class BarangController extends Controller
             'harga_barang' => 'required|numeric|min:0',
             'harga_beli' => 'required|numeric|min:0',
             'stok_awal_barang' => 'required|integer|min:0',
-            'jumlah_barang' => 'required|integer|min:0', // Tambahkan validasi untuk jumlah_barang
+            'jumlah_barang' => 'required|integer|min:0',
             'input_bulan' => 'required|string|max:255'
         ]);
 
@@ -75,7 +84,7 @@ class BarangController extends Controller
         $barang->harga_barang = $request->harga_barang;
         $barang->harga_beli = $request->harga_beli;
         $barang->stok_awal_barang = $request->stok_awal_barang;
-        $barang->jumlah_barang = $request->jumlah_barang; // Update jumlah_barang
+        $barang->jumlah_barang = $request->jumlah_barang;
         $barang->input_bulan = $request->input_bulan;
         $barang->save();
 
