@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -32,25 +33,34 @@ class AuthController extends Controller
 
         $user = User::where('email', $credentials['email'])->first();
 
-        if ($user) {
-            if (!$user->hasVerifiedEmail()) {
-                return redirect('login')->withErrors(['email' => 'Your email address is not verified.']);
+        if (!$user) {
+            // If the email does not exist
+            return redirect('login')->withErrors(['email' => 'Email tidak terdaftar di sistem.']);
+        }
+
+        if ($user && !$user->hasVerifiedEmail()) {
+            // If the email is not verified
+            return redirect('login')->withErrors(['email' => 'Your email address is not verified.']);
+        }
+
+        if ($user && !Hash::check($credentials['password'], $user->password)) {
+            // If the password does not match
+            return redirect('login')->withErrors(['password' => 'Password tidak sesuai.']);
+        }
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            $user = Auth::user();
+            if ($user->id_role == 1) {
+                return redirect('dashboard_owner');
             }
-
-            if (Auth::attempt($credentials)) {
-                $request->session()->regenerate();
-
-                $user = Auth::user();
-                if($user->id_role == 1){
-                    return redirect('dashboard_owner');
-                }
-                if($user->id_role == 2){
-                    return redirect('dashboard_emp');
-                }
+            if ($user->id_role == 2) {
+                return redirect('dashboard_emp');
             }
         }
 
-        Session::flash('status','gagal');
+        Session::flash('status', 'gagal');
         Session::flash('message', 'Gagal Login');
         return redirect('login');
     }
