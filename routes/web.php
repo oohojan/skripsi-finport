@@ -98,5 +98,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('add-umkm', [BisnisController::class, 'add']);
     Route::post('add-umkm', [BisnisController::class, 'store']);
     Route::post('join-umkm/{id}', [BisnisController::class, 'joinUmkm'])->name('join-umkm');
+
+    Route::put('update-employee-status/{id}', [BisnisController::class, 'updateEmployeeStatus'])->name('update-employee-status');
 });
 

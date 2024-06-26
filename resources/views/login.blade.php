@@ -14,6 +14,7 @@
     }
 
     .form-login {
+        margin-top: 50px;
         width: 500px;
         border: solid 1px;
         padding: 20px;
@@ -42,6 +43,9 @@
                 </ul>
             </div>
         @endif
+        <div>
+            <img src="{{ asset('images/logo.png') }}" alt="FinPort" height="70">
+        </div>
         <div class="form-login">
             <form action="{{ route('login') }}" method="post">
                 @csrf

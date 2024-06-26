@@ -43,7 +43,7 @@
             </div>
 
             <div class="mt-3">
-                <label for="password">Create New Password:</label>
+                <label for="password">Create New Password: (optional)</label>
                 <input type="password" class="form-control" id="password" name="password" value="" >
             </div>
 

@@ -17,4 +17,9 @@ class Employee extends Model
     {
         return $this->belongsTo(Umkm::class, 'id_umkm');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
 }

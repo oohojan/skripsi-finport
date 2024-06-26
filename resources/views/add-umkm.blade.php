@@ -26,12 +26,12 @@
             @csrf
             <input type="hidden" name="id_umkm" value="">
             <div>
-                <label for="nama_umkm" class="form-label">Name</label>
+                <label for="nama_umkm" class="form-label">Name <span style="color: red;">*</label>
                 <input type="nama_umkm" name="nama_umkm" id="nama_umkm" class="form-control" required>
             </div>
             <div>
-                <label for="alamat" class="form-label">Alamat</label>
-                <input type="alamat" name="alamat" id="alamat" class="form-control">
+                <label for="alamat" class="form-label">Alamat <span style="color: red;">*</label>
+                <input type="alamat" name="alamat" id="alamat" class="form-control" required>
             </div>
             <div class="mt-3">
                 <button class="btn btn-success" type="submit">Save</button>
@@ -40,3 +40,9 @@
     </div>
 
 @endsection
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>

@@ -38,6 +38,11 @@ class ProfileController extends Controller
         $user->email = $request->email;
         $user->No_Telepon = $request->no_telepon;
         $user->address = $request->address;
+
+        if ($user->have_business === 0) {
+            $user->have_business = 0;
+        }
+
         if ($request->filled('password')) {
             $user->password = bcrypt($request->password);
         }

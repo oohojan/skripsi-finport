@@ -13,7 +13,7 @@
     <form action="{{ route('transaksi.storeDetail', ['id' => $transaksi->id]) }}" method="post">
         @csrf
         <div class="mb-3">
-            <label for="id_barang" class="form-label">Nama Barang<span style="color: red;">*</label>
+            <label for="id_barang" class="form-label">Nama Barang <span style="color: red;">*</label>
             <select class="form-control" id="id_barang" name="id_barang" required>
                 <option value="">Pilih Barang</option>
                 @foreach ($barang as $item)

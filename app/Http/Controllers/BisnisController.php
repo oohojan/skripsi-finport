@@ -10,14 +10,24 @@ use Illuminate\Support\Facades\Auth;
 
 class BisnisController extends Controller
 {
-    public function bisnis(){
-
+    public function bisnis()
+    {
         $umkm = UMKM::where('id_user', Auth::id())->first();
-        return view('bisnis_anda', compact('umkm'));
+        $employees = Employee::where('id_umkm', $umkm->id)->get();
+
+        return view('bisnis_anda', compact('umkm', 'employees'));
     }
 
-    public function umkm(){
-        $umkm = Umkm::all();
+    public function umkm(Request $request)
+    {
+        $search = $request->input('search');
+
+        if ($search) {
+            $umkm = Umkm::where('nama_umkm', 'LIKE', "%{$search}%")->paginate(10);
+        } else {
+            $umkm = Umkm::paginate(10);
+        }
+
         return view('umkm-list', ['umkm' => $umkm]);
     }
 
@@ -37,15 +47,40 @@ class BisnisController extends Controller
             Employee::create([
                 'id_user' => $user->id,
                 'id_umkm' => $id,
+                'status' => 'pending',
             ]);
 
-            $user->have_business = 1;
-            $user->save();
-
-            return redirect()->route('profile')->with('success', 'You have successfully joined the UMKM.');
+            return redirect()->route('profile')->with('success', 'You have successfully applied to join the UMKM. Please wait for the owner to accept you.');
         } else {
-            return redirect()->route('profile')->with('error', 'You are already an employee of this UMKM.');
+            return redirect()->route('profile')->with('error', 'You have already applied to join this UMKM.');
         }
+    }
+
+    public function updateEmployeeStatus(Request $request, $id)
+    {
+        $employee = Employee::find($id);
+
+        if (!$employee) {
+            return redirect()->route('bisnis_anda')->with('error', 'Employee not found.');
+        }
+
+        // Update status employee
+        $employee->status = $request->status;
+
+        if ($request->status == 'accepted') {
+            $user = User::find($employee->id_user);
+            if ($user) {
+                $user->have_business = 1;
+                $user->save();
+            }
+            $employee->save();
+        } elseif ($request->status == 'declined') {
+            $employee->save();
+        } else {
+            return redirect()->route('bisnis_anda')->with('error', 'Invalid status update.');
+        }
+
+        return redirect()->route('bisnis_anda')->with('success', 'Employee status updated successfully.');
     }
 
     public function add(){

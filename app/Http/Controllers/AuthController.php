@@ -78,8 +78,8 @@ class AuthController extends Controller
             'Nama' => 'required|max:255',
             'email' => 'required|unique:users|max:255|regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/',
             'password' => 'required|max:255|min:8',
-            'No_Telepon' => 'max:255|min:12',
-            'address' => 'max:255',
+            'No_Telepon' => 'nullable|max:255|min:12',
+            'address' => 'nullable|max:255',
         ]);
 
         $user = User::create([

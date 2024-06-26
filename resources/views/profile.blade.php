@@ -43,9 +43,15 @@
                 <input type="text" class="form-control" id="role" value="{{ $user->role->name }}" readonly>
             </div>
 
+            @if (Auth::user()->have_business == 0)
+            <div class="mt-3">
+                <p>Silahkan Join umkm untuk mengupdate profile anda</p>
+            </div>
+            @elseif (Auth::user()->have_business == 1)
             <div class="mt-3">
                 <a href="{{ route('profile.edit') }}" class="btn btn-primary">Update Profile</a>
             </div>
+            @endif
 
         </div>
 

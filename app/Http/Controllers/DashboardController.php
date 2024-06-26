@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Employee;
 use App\Models\Pemasok;
 use App\Models\Pelanggan;
 use App\Models\Transaksi;
@@ -30,10 +31,22 @@ class DashboardController extends Controller
 
     public function dash_emp()
     {
-        $transaksi = Transaksi::todayTransactions()->get();
+        $userId = Auth::user()->id;
+        $employee = Employee::where('id_user', $userId)->first();
+
+        $statusPending = false;
+
+        if ($employee) {
+            $statusPending = $employee->status === 'pending';
+            $umkmId = $employee->id_umkm;
+            $transaksi = Transaksi::todayTransactions($umkmId)->get();
+        } else {
+            $transaksi = collect();
+        }
 
         return view('dashboard_emp', [
-            'transaksi' => $transaksi
+            'transaksi' => $transaksi,
+            'statusPending' => $statusPending
         ]);
     }
 }
