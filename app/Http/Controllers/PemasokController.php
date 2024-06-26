@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\pemasok;
+use App\Models\Pemasok;
 use App\Models\Umkm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
